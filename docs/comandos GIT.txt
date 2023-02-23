@@ -1,0 +1,19 @@
+ Instalat GIT
+    https://git-scm.com/
+cofigurar:
+    git config --global user.name "Su Nombre"
+    git config --global user.email "su@correo.com"
+
+Crear una cuenta en (GITHUB, BITBUCKET, GITLAB)
+
+    crear un repositorio (remoto)
+-----------------------------------------------
+Iniciar mi proyecto de Laravel con GIT
+> git init
+
+referencia del repositorio local con el repositorio remoto
+> git remote add origin https://github.com/cchura94/back_api_proyecto_laravel.git
+-----------------------------------------------
+
+git add .
+git commit -m "Laravel Api Authentication"
