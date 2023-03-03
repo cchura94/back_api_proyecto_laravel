@@ -4,8 +4,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "pedro@mail.com",
-    "password": "pedro54321"
+    "email": "admin@mail.com",
+    "password": "admin54321"
 }
 
 ### registro
@@ -13,7 +13,7 @@ Content-Type: application/json
 ### perfil
 GET http://127.0.0.1:8000/api/v1/auth/perfil
 Accept: application/json
-Authorization: Bearer 4|zNRxs9XDFyNnTWBX8pdWR2TKsFb3p8mbxDzp8Aa9
+Authorization: Bearer 3|wxZuVkB5avB6mTbTZrUqmRMGvxSJuuZjnCuUtCSW
 
 ### logout
 POST http://127.0.0.1:8000/api/v1/auth/logout

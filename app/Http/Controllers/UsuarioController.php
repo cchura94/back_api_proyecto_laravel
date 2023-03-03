@@ -12,10 +12,17 @@ class UsuarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // listar
-        $usuarios = User::get();
+        if($request->buscado){
+            $usuarios = User::orWhere('name', 'like', '%'.$request->buscado.'%')
+                                ->orWhere('email', 'like', '%'.$request->buscado.'%')
+                                ->get();
+
+        }else{
+            // listar
+            $usuarios = User::get();
+        }
 
         return response()->json($usuarios);
     }

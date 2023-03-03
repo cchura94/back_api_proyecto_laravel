@@ -55,9 +55,11 @@ class AuthController extends Controller
         return response()->json(["message" => "El usuario ha sido registrado"], 201);
     }
 
-    public function miPerfil()
+    public function miPerfil(Request $request)
     {
         $user = Auth::user();
+
+        $user->ip = exec('getmac'); 
 
         return response()->json($user, 200);
     }
