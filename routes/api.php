@@ -30,6 +30,9 @@ Route::prefix('v1/auth')->group(function(){
 // CRUD Api para Usuario
 
 Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
+
+    
+    Route::post('producto/{id}/imagen', [ProductoController::class, "actualizarImagen"]);
     
     Route::apiResource("usuario", UsuarioController::class);// ->middleware('auth:sanctum');
     Route::apiResource("categoria", CategoriaController::class);

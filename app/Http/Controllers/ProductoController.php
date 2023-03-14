@@ -25,7 +25,7 @@ class ProductoController extends Controller
                                      ->orderBy($orderby, 'asc')
                                      ->paginate($limit);
         }else{
-            $productos = Producto::orderBy($orderby, 'desc')->paginate($limit);
+            $productos = Producto::with('categoria:id,nombre')->orderBy($orderby, 'desc')->paginate($limit);
         }
 
         return response()->json($productos, 200);
@@ -47,6 +47,7 @@ class ProductoController extends Controller
         // subir img
         $direccion_imagen = "";
 
+
         // guardar
         $prod = new Producto();
         $prod->nombre = $request->nombre;
@@ -54,11 +55,28 @@ class ProductoController extends Controller
         $prod->stock = $request->stock;
         $prod->descripcion = $request->descripcion;
         $prod->categoria_id = $request->categoria_id;
-        $prod->nombre = $direccion_imagen;
+        $prod->imagen = $direccion_imagen;
         $prod->save();
 
         // responder
         return response()->json(["mensaje" => "Producto registrado", "data" => $prod]);
+    }
+
+    public function actualizarImagen($id, Request $request)
+    {
+        $producto = Producto::find($id);
+
+        if($file = $request->file('imagen')){
+            $direccion_imagen = time()."-".$file->getClientOriginalName();
+            $file->move("imagenes", $direccion_imagen);
+
+            $direccion_imagen = "imagenes/". $direccion_imagen;
+            $producto->imagen = $direccion_imagen;
+            $producto->save();
+        }
+
+        return response()->json(["mensaje" => "Producto imagen actualizada"], 201);
+        
     }
 
     /**
