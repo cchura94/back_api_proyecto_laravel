@@ -16,15 +16,15 @@ class ProductoController extends Controller
     {
         // /api/producto?page=2&limit=10&q=laptop&orderby=id
         // $page = $request->page;
-        $limit = $request->limit?$request->limit:10;
+        $limit = $request->limit ? $request->limit : 10;
         $q = $request->q;
-        $orderby = $request->orderby?$request->orderby:'id';
+        $orderby = $request->orderby ? $request->orderby : 'id';
 
-        if($q){
-            $productos = Producto::where('nombre', 'like', '%'.$q.'%')
-                                     ->orderBy($orderby, 'asc')
-                                     ->paginate($limit);
-        }else{
+        if ($q) {
+            $productos = Producto::where('nombre', 'like', '%' . $q . '%')
+                ->orderBy($orderby, 'asc')
+                ->paginate($limit);
+        } else {
             $productos = Producto::with('categoria:id,nombre')->orderBy($orderby, 'desc')->paginate($limit);
         }
 
@@ -42,7 +42,7 @@ class ProductoController extends Controller
         // validar
         $request->validate([
             "nombre" => 'required|min:3|max:200',
-            "categoria_id"=> "required"
+            "categoria_id" => "required"
         ]);
         // subir img
         $direccion_imagen = "";
@@ -66,17 +66,16 @@ class ProductoController extends Controller
     {
         $producto = Producto::find($id);
 
-        if($file = $request->file('imagen')){
-            $direccion_imagen = time()."-".$file->getClientOriginalName();
+        if ($file = $request->file('imagen')) {
+            $direccion_imagen = time() . "-" . $file->getClientOriginalName();
             $file->move("imagenes", $direccion_imagen);
 
-            $direccion_imagen = "imagenes/". $direccion_imagen;
+            $direccion_imagen = "imagenes/" . $direccion_imagen;
             $producto->imagen = $direccion_imagen;
             $producto->save();
         }
 
         return response()->json(["mensaje" => "Producto imagen actualizada"], 201);
-        
     }
 
     /**
@@ -99,7 +98,27 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // validar
+        $request->validate([
+            "nombre" => 'required|min:3|max:200',
+            "categoria_id" => "required"
+        ]);
+        // subir img
+        $direccion_imagen = "";
+
+
+        // guardar
+        $prod = Producto::find($id);
+        $prod->nombre = $request->nombre;
+        $prod->precio = $request->precio;
+        $prod->stock = $request->stock;
+        $prod->descripcion = $request->descripcion;
+        $prod->categoria_id = $request->categoria_id;
+        $prod->imagen = $direccion_imagen;
+        $prod->update();
+
+        // responder
+        return response()->json(["mensaje" => "Producto Actualizado", "data" => $prod]);
     }
 
     /**
@@ -110,6 +129,9 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $prod = Producto::find($id);
+        $prod->delete();
+        return response()->json(["mensaje" => "Producto eliminado"]);
+
     }
 }
