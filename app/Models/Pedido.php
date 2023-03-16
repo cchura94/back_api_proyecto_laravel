@@ -18,4 +18,12 @@ class Pedido extends Model
     {
         return $this->belongsToMany(Producto::class);
     }
+
+    public static function generarCodigoPedido()
+    {
+        $ultimoPedido = self::latest('id')->first();
+        $codigo = 'PED-' . str_pad($ultimoPedido ? $ultimoPedido->id + 1 : 1, 4, '0', STR_PAD_LEFT);
+        return $codigo;
+    }
+
 }

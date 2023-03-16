@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pedido;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
@@ -13,7 +14,9 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        //
+        $pedidos = Pedido::orderBy('id', 'desc')->paginate(10);
+
+        return response()->json($pedidos);
     }
 
     /**
@@ -24,7 +27,23 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validar
+        $request->validate([
+            "cliente_id" => "required",
+        ]);
+        // registrar nuevo Pedido (PENDIENTE)
+        $pedido = new Pedido();
+        // asignar cliente al pedido
+        $pedido->cliente_id = $request->cliente_id;
+        $pedido->fecha = date("Y-m-d H:i:s");
+        $pedido->cod_pedido = Pedido::generarCodigoPedido();
+        $pedido->save();
+
+        
+        // asignar Productos
+        // actualizar estado //  COMPLETADO
+        // guardarmos cambios
+        // retornamos respuesta
     }
 
     /**
