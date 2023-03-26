@@ -40,3 +40,8 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
     Route::apiResource("cliente", ClienteController::class);
     Route::apiResource("pedido", PedidoController::class);
 });
+
+
+Route::get("/no-autorizado", function(){
+    return ["mensaje" => "No estas Autorizado para ver esta página"];
+})->name("login");
